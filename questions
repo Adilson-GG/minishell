@@ -1,0 +1,11 @@
+"export"
+
+"Si on a un probleme de maloc que faire ? arreter tout le programme ?"
+
+"Changement de la structue env pour gerer les different cas de valeur null avec ou sans presence de "
+
+"Parsing, trop de cas specifique, quoi gerer"
+
+"La gestion du cas ou on defini la varible avec une valeur, puis on export la variable ans indique de nvlle valeur, la variable doit bien etre amene avec sa valeur"
+
+"valeur retour des codes erreur dans le cas ou on utilise pas une fonction donnee."
