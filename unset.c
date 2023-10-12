@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 06:26:17 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/11 07:16:54 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/12 07:52:37 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,19 @@ void printList(t_env *env)
 }
 
 
-void	delete_element(char *name, t_env *env)
+void	delete_element(char *name, t_env **env)
 {
 	t_env	*tmp;
 	t_env	*new;
 
-	tmp = env->next;
-	new = env;
-	if (!(ft_strncmp(env->name, name, ft_strlen(tmp->name))))
+	tmp = *env;
+	new = NULL;
+	if (!(ft_strncmp((*env)->name, name, ft_strlen((*env)->name))))
 	{
-		env = env->next;
-		return ;
+		*env = (*env)->next;
+		if (tmp->value)
+			free(tmp->value);
+		return (free(tmp->name), free(tmp));
 	}
 	while (tmp && (ft_strncmp(tmp->name, name, ft_strlen(tmp->name)) != 0))
 	{
@@ -76,20 +78,19 @@ void	delete_element(char *name, t_env *env)
 	if (tmp)
 	{
 		new->next = tmp->next;
-		free(tmp->name);
 		if (tmp->value)
 			free(tmp->value);
-		free(tmp);
+		return (free(tmp->name), free(tmp));
 	}
 }
 
-void	unset(char **cmd, t_env *env)
+void	unset(char **cmd, t_env **env)
 {
 	int		i;
 	t_env	*tmp;
 
 	i = 1;
-	if (!cmd[1])
+	if (!cmd[1] || !env)
 		return ;
 	if (cmd[i][0] == '-')
 	{
@@ -109,8 +110,9 @@ int	main(int argc, char **argv, char **env)
 	t_env *en;
 	en = create_own_env(env);
 	//sort_list(en);
-	//printList(en);
-	unset(argv, en);
+	printList(en);
+	unset(argv, &en);
+	printf("[[[[[   %s   ]]]]]\n", en->name);
 	printf("\n--------------------\n");
 	printList(en);
 	clear_env(en);
