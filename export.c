@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/11 12:15:35 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/12 06:46:50 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	add_back(t_env **lst, t_env *new)
 	}
 	else
 		*lst = new;
-	printList(*lst);
 }
 
 char *get_value(char *s)
@@ -112,10 +111,10 @@ char	*get_name(char *s)
 	i = 0;
 	while (s[i] && s[i] != '=')
 		i ++;
-	name = malloc(sizeof(char) * i);
+	name = malloc(sizeof(char) * i + 1);
 	if (!name)
 		return (NULL);
-	ft_strlcpy(name, s, i);
+	ft_strlcpy(name, s, i + 1);
 	return (name);
 }
 
@@ -149,12 +148,12 @@ int	check_parsing(char *cmd)
 	if (cmd[i])
 	{
 		i ++;
-		printf("%c // %d\n", cmd[i], i);
+		//printf("%c // %d\n", cmd[i], i);
 		if (cmd[i] == '\"')
 			return (printf("parse\n"), annexe_parsing(cmd, i + 1));
 		while (cmd[i])
 		{
-			printf("---->    %c\n", cmd[i]);
+			//printf("---->    %c\n", cmd[i]);
 			if  (!((cmd[i] >='a' && cmd[i] <= 'z') || (cmd[i] >= 'A' && cmd[i] <= 'Z')
 				|| (cmd[i] >= '0' && cmd[i] <= '9') || cmd[i] == '_' || cmd[i] == '+' || cmd[i] == '-'))
 				return (printf("4\n"), 0);
@@ -230,12 +229,8 @@ void	export(char **cmd, t_env *env)
 	if (count(cmd) > 1 || !check_parsing(cmd[1]))
 		return (perror("not a valid identifier"));
 	new = new_element(get_name(cmd[1]), get_value(cmd[1]), cmd[1]);
-	printf("%s\n", get_name(cmd[1]));
 	if (!(check_occurence(env, new)))
-	{
 		add_back(&env, new);
-		//printList(env);
-	}
 	else
 		clear_env(new);
 	printList(env); // ne pas oublier de retirer
@@ -247,7 +242,7 @@ int	main(int argc, char **argv, char **env)
 	t_env *en;
 	en = create_own_env(env);
 	export (argv, en);
-	//clear_env(en);
+	clear_env(en);
 	// printList(en);
 	// sort_list(en);
 	// printf("\n\n");
