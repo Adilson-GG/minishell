@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 07:27:15 by niromano          #+#    #+#             */
-/*   Updated: 2023/10/11 07:35:11 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/12 08:27:02 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_env	*create_own_env(char **env)
 	own_env = fill_env(tmp);
 	start_env = own_env;
 	i = 1;
-	while (i < 7)//env[i] != NULL)
+	while (i < 3)//env[i] != NULL)
 	{
 		tmp = separate_env(env[i]);
 		new_env = fill_env(tmp);

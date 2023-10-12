@@ -6,7 +6,7 @@
 /*   By: agomes-g <agomes-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:10:33 by agomes-g          #+#    #+#             */
-/*   Updated: 2023/10/12 06:46:50 by agomes-g         ###   ########.fr       */
+/*   Updated: 2023/10/12 08:31:17 by agomes-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,60 +118,31 @@ char	*get_name(char *s)
 	return (name);
 }
 
-int annexe_parsing(char *cmd, int i)
-{
-	while (cmd[i])
-	{
-		if (!ft_isprint(cmd[i]))
-			return (printf("5\n"), 0);
-		i ++;
-	}
-	if (cmd[i - 1] != '\"')
-		return (printf("6\n"), 0);
-	return (1);
-}
-
 int	check_parsing(char *cmd)
 {
 	int	i;
 
 	i = 1;
-	if (!((cmd[0] >='a' && cmd[0] <= 'z') || (cmd[0] >= 'A' && cmd[0] <= 'Z')))
-		return (printf("1\n"), 0);
+	if (!((cmd[0] >='a' && cmd[0] <= 'z') || (cmd[0] >= 'A' && cmd[0] <= 'Z') || cmd[0] == '_'))
+		return (0); 
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if  (!((cmd[i] >='a' && cmd[i] <= 'z') || (cmd[i] >= 'A' && cmd[i] <= 'Z')
 			|| (cmd[i] >= '0' && cmd[i] <= '9') || cmd[i] == '_'))
-			return (printf("2\n"), 0);
+			return (0);
 		i ++;
 	}
 	if (cmd[i])
 	{
 		i ++;
-		//printf("%c // %d\n", cmd[i], i);
-		if (cmd[i] == '\"')
-			return (printf("parse\n"), annexe_parsing(cmd, i + 1));
 		while (cmd[i])
 		{
-			//printf("---->    %c\n", cmd[i]);
-			if  (!((cmd[i] >='a' && cmd[i] <= 'z') || (cmd[i] >= 'A' && cmd[i] <= 'Z')
-				|| (cmd[i] >= '0' && cmd[i] <= '9') || cmd[i] == '_' || cmd[i] == '+' || cmd[i] == '-'))
-				return (printf("4\n"), 0);
+			if (!ft_isprint(cmd[i]))
+				return (0);
 			i ++;
 		}
 	}
 	return (1);
-}
-// verifier si lorsque je compare des chaine de caractere est ce que le gullemet et considerer comme un caractere ou sil est ignre
-
-int	count(char **cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd[i + 1])
-		i ++;
-	return (i);
 }
 
 void	sort_list(t_env *env) //ajouter les changements avec val
@@ -226,8 +197,8 @@ void	export(char **cmd, t_env *env)
 		sort_list(env);
 		return (printList(env));
 	}
-	if (count(cmd) > 1 || !check_parsing(cmd[1]))
-		return (perror("not a valid identifier"));
+	if (cmd[2] || !check_parsing(cmd[1]))
+		return (ft_putstr_fd("not a valid identifier\n", 1));
 	new = new_element(get_name(cmd[1]), get_value(cmd[1]), cmd[1]);
 	if (!(check_occurence(env, new)))
 		add_back(&env, new);
